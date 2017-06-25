@@ -38,7 +38,7 @@
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="left-sidebar">
-						<h2>Filters</h2>
+						
 						<div class="brands_products"><!--brands_products-->
 							<h2>Brands</h2>
 							<div class="brands-name">
@@ -68,6 +68,7 @@
 						</div><!--/brands_products-->
 						
 						<div class=""><!--price-range-->
+							<h2>Filters</h2>
 							<h2>Price Range</h2>							
 							<div class="well text-center">
 								 <input type="range"  min="0" max="60000" step="100"  id="slider1" onChange="showvalue()"><br />
