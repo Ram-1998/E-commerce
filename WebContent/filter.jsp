@@ -37,18 +37,66 @@
 					<div class="features_items"><!--New Items-->
 						<h2 class="title text-center">filtered Items</h2>
 						<%
-							int ram = Integer.parseInt(request.getParameter("ram"));
-							int rom = Integer.parseInt(request.getParameter("rom"));
+							String ram = request.getParameter("ram");
+							String rom = request.getParameter("rom");
 							String nType = request.getParameter("nType");
 							String os = request.getParameter("os");
-							float min = Float.parseFloat(request.getParameter("min"));
-							float max = Float.parseFloat(request.getParameter("max"));
+							String min = request.getParameter("min");
+							String max = request.getParameter("max");
+							
+							
+							
 							ArrayList<product> productList = new ArrayList<product>();
 							Class.forName("com.mysql.jdbc.Driver");
 							Connection con1 = ConnectionFactory.getInstance().getConnection();
 							Statement st1 = con1.createStatement();	
-							String queryString = "select * from product where RAM = " + ram + " AND ROM = "+ rom +" And OS = '" + os + "' And netorkType = '"+ nType +"' AND SellingPrice BETWEEN "+ min +" AND "+ max +" ORDER BY addDate,addTime";
-							ResultSet rs = st1.executeQuery(queryString); // this is for name
+							String query = "select * from product where ";
+							
+							if(!ram.equals("select")){
+								if(query.endsWith("and ") || query.endsWith("where "))
+									query+=" RAM="+ ram +" and ";
+								else
+									query+=" and RAM="+ ram +" and ";
+							}
+							if(!rom.equals("select")){
+								if(query.endsWith("and ") || query.endsWith("where "))
+									query+=" ROM="+ rom +" and ";
+								else
+									query+=" and ROM="+ rom +" and ";
+							}
+							if(!nType.equals("select")){
+								if(query.endsWith("and ") || query.endsWith("where "))
+									query+=" netorkType='"+ nType +"' and ";
+								else
+									query+=" and netorkType='"+ nType +"' and ";
+							}
+							if(!os.equals("select")){
+								if(query.endsWith("and ") || query.endsWith("where "))
+									query+=" OS='"+ os +"' and ";
+								else
+									query+=" and OS='"+ os +"' and ";
+							}
+							boolean flag=false;
+							if(query.endsWith("and "))
+							{
+								flag=true;
+								query+="(";
+							}
+							if(flag==true)
+								query+=")";
+							if(query.endsWith("and ()"))
+								query=query.substring(0,query.length()-6);
+							
+							if(query.endsWith("and ") || query.endsWith("where "))
+								query+=" SellingPrice BETWEEN "+ min +" AND " + max;
+							else
+								query+=" and SellingPrice BETWEEN "+ min +" AND " + max;
+							
+							System.out.println(query);
+							
+							ResultSet rs = st1.executeQuery(query); // this is for name
+							
+							
 							while (rs.next()) {
 							product p=new product();
 							p.setProductId(rs.getInt(1));
@@ -58,6 +106,7 @@
 							p.setBrand(rs.getString(6));
 							productList.add(p);
 							}
+													
 							rs.close();
 							
 							if(productList.size() == 0){ %>

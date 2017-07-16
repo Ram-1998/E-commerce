@@ -71,17 +71,18 @@
 							<h2>Filters</h2>
 							<h2>Price Range</h2>							
 							<div class="well text-center">
-								 <input type="range"  min="0" max="60000" step="100"  id="slider1" onChange="showvalue()"><br />
-								 <b class="pull-left">₹ 0</b> <b id="value-min">30000</b> <b class="pull-right">₹ 60000</b>
+								 <input type="range"  min="0" max="60000" step="100" value="0"  id="slider1" onChange="showvalue()"><br />
+								 <b class="pull-left">₹ 0</b> <b id="value-min">0</b> <b class="pull-right">₹ 60000</b>
 								 <h3>To</h3>
-								 <input type="range"  min="0" max="60000" step="100"  id="slider2" onChange="showvalue()"><br />
+								 <input type="range"  min="0" max="60000" step="100"  id="slider2" onChange="showvalue()" ><br />
 								 <b class="pull-left">₹ 0</b> <b id="value-max">30000</b> <b class="pull-right">₹ 60000</b>
 							</div>
 						</div><!--/price-range-->
 						<div class=""><!--Os-->
 							<h2>OS</h2>
 								<div class="filterOption">
-									<select name="os" id="os">
+									<select name="os" id="os" onchange="loadDoc()">
+										<option value="select"> select OS</option>
 										<option value="android">Android</option>
 										<option value="windows">Windows</option>
 										<option value="ios">ios</option>
@@ -93,7 +94,8 @@
 						<div class="filterOption"><!--RAM-->
 							<h2>RAM</h2>
 								<div class="">
-									<select name="ram" id="ram">
+									<select name="ram" id="ram" onchange="loadDoc()">
+										<option value="select"> select RAM</option>
 										<option value="1"> 512 Mb</option>
 										<option value="1"> 1 Gb</option>
 										<option value="2">  2 Gb</option>
@@ -106,7 +108,8 @@
 						<div class="filterOption"><!--ROM-->
 							<h2>R0M</h2>
 								<div class="">
-									<select name="rom" id="rom">
+									<select name="rom" id="rom" onchange="loadDoc()">
+										<option value="select"> select ROM</option>
 										<option value="2">2 Gb</option>
 										<option value="4">4 Gb</option>
 										<option value="8"> 8 Gb</option>
@@ -120,7 +123,8 @@
 						<div class="filterOption"><!--ROM-->
 							<h2>Network type</h2>
 								<div class="">
-									<select name="nType" id="nType">
+									<select name="nType" id="nType" onchange="loadDoc()">
+										<option value="select"> select network type</option>
 										<option value="2G">2G</option>
 										<option value="3G">3G</option>
 										<option value="4G">4G</option>
@@ -128,7 +132,6 @@
 									</select>
 								</div>	
 						</div><!--network type-->
-						<button class="btn btn-default cart" onclick="loadDoc()">Apply Filter</button>
 						         
 						         <script>
 									function loadDoc() {
@@ -158,6 +161,7 @@
 									function showvalue(){
 										document.getElementById("value-min").innerHTML = document.getElementById("slider1").value;
 										document.getElementById("value-max").innerHTML = document.getElementById("slider2").value;
+										loadDoc();
 									}
 								</script>
 						  
@@ -300,7 +304,47 @@
 							</div>
 						</div>						
 						<%} %>
-					</div><!--All Items-->
+					</div>
+					<div class="features_items" id="allItems" style="display:none;"><!--All Items-->
+						<h2 class="title text-center">All Items</h2>
+						<%
+							ArrayList<product> FilterList = new ArrayList<product>();
+							Class.forName("com.mysql.jdbc.Driver");
+							Statement filter = con2.createStatement();	
+											
+							
+							
+							rs = filter.executeQuery("select * from product "); // this is for name
+							while (rs.next()) {
+						%>
+						
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+										<div class="productinfo text-center">
+											<div class="indexSize">
+												<a href="productDetail.jsp" target="_blank">
+													<img src="images/products/<%=rs.getString(6)%>/<%=rs.getString(2)%>/1.jpeg" height="200px"/>
+												</a>
+											</div>
+											<h2 class="marketPrice"><%=rs.getFloat(4)%></h2>
+											<h2><%=rs.getFloat(5)%></h2>
+											<p><%=rs.getString(2)%></p>
+											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										</div>
+								</div>								
+							</div>
+						</div>						
+						<%} %>
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<!--All Items-->
 				</div>
 			</div>
 		</div>

@@ -107,16 +107,22 @@ public class MainController extends HttpServlet {
 		}
 		
 		if (key.equals("addToCart")) {
+			
+			if(request.getSession().getAttribute("customerId") == null) {
+				response.sendRedirect("login.jsp");
+			}
+			else{
 			int uId = (int) request.getSession().getAttribute("customerId");
 			int pId = Integer.parseInt(request.getParameter("pId"));
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
 			boolean val = MainDao.addToCart(uId,pId,quantity);
 			if (val) {
-				response.sendRedirect("index.jsp");
+				response.sendRedirect("cart.jsp");
 				/* request.getSession().putValue(name,username); */
 				out.print("<html><body>Okay");
 			} else
 				out.print("<html><body>No");
+			}
 		}
 		
 		if (key.equals("addBrand")) {
@@ -296,6 +302,14 @@ public class MainController extends HttpServlet {
 			String zip = request.getParameter("zip");
 			String deliveryAddress = fullname + " , " + address + " , " + city + " , " + state + " , " + zip + ".";
 			float orderTotal = (float)request.getSession().getAttribute("GrandTotal");
+			
+			if(orderTotal == 100){
+				out.print("<html><body>No");
+				request.setAttribute("checkouterror", "* no item in cart");
+		    	request.getRequestDispatcher("checkout.jsp").forward(request, response);				
+			}
+			else{
+			
 			boolean val = MainDao.placeOrder(uId,deliveryAddress,orderTotal);
 			if (val) {
 				response.sendRedirect("cart.jsp");
@@ -303,6 +317,7 @@ public class MainController extends HttpServlet {
 				out.print("<html><body>Okay");
 			} else
 				out.print("<html><body>No");
+			}
 		}
 		
 		if (key.equals("updateCustomer")) {

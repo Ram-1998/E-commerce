@@ -344,7 +344,7 @@
 													<td>
 														<form action="MainController" method="post">
 														<select name="payment">
-															<option>-change payment status-</option>
+															<option disabled>-change payment status-</option>
 															<option value="Due">Due</option>
 															<option value="Paid">Paid</option>
 														</select>
@@ -356,7 +356,7 @@
 													<td>
 														<form action="MainController" method="post">
 														<select name="delivery">
-															<option>-change Delivery status-</option>
+															<option disabled>-change Delivery status-</option>
 															<option value="delivered">delivered</option>
 															<option value="not delivered">not delivered</option>
 														</select>

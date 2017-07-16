@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 	String driverClassName = "com.mysql.jdbc.Driver";
-	String connectionUrl = "jdbc:mysql://localhost:3306/-DATABASE NAME-";
-	String dbUser = "username";
-	String dbPwd = "password";
+	String connectionUrl = "jdbc:mysql://localhost:3306/SS";
+	String dbUser = "root";
+	String dbPwd = "Shreeram@2006";
 
 	private static ConnectionFactory connectionFactory = null;
 

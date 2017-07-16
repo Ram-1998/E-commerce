@@ -45,8 +45,12 @@
 				</ol>
 			</div><!--/breadcrums-->
 			<% 
-			customer c = new customer();
-			c = (customer)request.getSession().getAttribute("customer");
+			int uId = (int)request.getSession().getAttribute("customerId");
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = ConnectionFactory.getInstance().getConnection();
+			Statement st = con.createStatement();
+			ResultSet rs2 = st.executeQuery("select * from customer where customerId ="+ uId +" ;");
+			rs2.first();
 			
 			%>
 
@@ -56,14 +60,21 @@
 						<div class="bill-to">
 							<p>Bill To</p>
 							<div class="form-one">
+								<span style="color:red;"><p>
+								<%
+								String checkouterror = (String)request.getAttribute("checkouterror");
+								if(checkouterror != null)
+								out.println(checkouterror); 
+								%>
+								</p></span>
 								<form action="MainController" method="post">							
-										<input type="text" placeholder="Full Name" name="fullname" value="<%=c.getFname() %>  <%=c.getLname() %>">
-										<input type="email" placeholder="Email*" name="email" value="<%=c.getEmail() %>">
-										<input type="number" placeholder="Phone" name="phone" value="<%=c.getPhone() %>">
-										<input type="text" placeholder="Address" name="address" value="<%=c.getAddress() %>">
-										<input type="text" placeholder="City" name="city" value="<%=c.getCity() %>">
-										<input type="text" placeholder="State" name="state" value="<%=c.getState() %>">
-										<input type="number" Size="6" maxlength="6" placeholder="Zip" name="zip" value="<%=c.getZip() %>">
+										<input type="text" placeholder="Full Name" name="fullname" value="<%=rs2.getString("customerFname") %>  <%=rs2.getString("customerLname") %>">
+										<input type="email" placeholder="Email*" name="email" value="<%=rs2.getString("customerEmail") %>">
+										<input type="number" placeholder="Phone" name="phone" value="<%=rs2.getString("customerPhone") %>">
+										<input type="text" placeholder="Address" name="address" value="<%=rs2.getString("customerAddress") %>">
+										<input type="text" placeholder="City" name="city" value="<%=rs2.getString("customerCity") %>">
+										<input type="text" placeholder="State" name="state" value="<%=rs2.getString("customerState") %>">
+										<input type="number" Size="6" maxlength="6" placeholder="Zip" name="zip" value="<%=rs2.getString("customerZip") %>">
 										<input type="hidden" name="key" value="placeorder">	
 										<input type="Submit" name="" value="place order" class="btn btn-default add-to-cart">	
 								</form>
@@ -90,12 +101,9 @@
 					</thead>
 					<tbody>
 						<%
-							int uId = (Integer)request.getSession().getAttribute("customerId");
-							Class.forName("com.mysql.jdbc.Driver");
-							Connection con = ConnectionFactory.getInstance().getConnection();
-							Statement st = con.createStatement();	
+							Statement st2 = con.createStatement();	
 							String queryString = "select * from cart where customerId = " + uId + " Order by addDate";
-							ResultSet rs = st.executeQuery(queryString); // this is for name
+							ResultSet rs = st2.executeQuery(queryString); // this is for name
 							float totalcost = 0 , shippingCost = 0;
 							while (rs.next()) {
 							Statement st1 = con.createStatement();

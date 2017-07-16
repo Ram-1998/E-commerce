@@ -36,8 +36,6 @@
 	<jsp:include page="header.jsp"></jsp:include>
 		<section style="margin-left:20%;">
 		<%
-		customer c = new customer();
-		c = (customer)request.getSession().getAttribute("customer");
 		int uId = (int)request.getSession().getAttribute("customerId");
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection con = ConnectionFactory.getInstance().getConnection();

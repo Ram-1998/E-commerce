@@ -4,7 +4,6 @@
 <%@page import="com.connection.*"%>
 <%@page import="com.beans.*"%>
 <%@page import="java.util.*"%>
-<%@ page errorPage="login.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>

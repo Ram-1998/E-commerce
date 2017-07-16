@@ -705,10 +705,13 @@ public class MainDao {
 	public static boolean cancleOrder(int oId) {
 		try {
 			String queryString = "delete from customer_order where orderId = " + oId ;
+			String queryString1 = "delete from order_detail where orderId = " + oId ;
 			connection = getConnection();
 			ptmt = connection.prepareStatement(queryString);
+			ptmt1 = connection.prepareStatement(queryString1);
 			System.out.println(queryString);
 			int k = ptmt.executeUpdate();
+			int j = ptmt1.executeUpdate();
 			if (k == 1) {
 				return true;
 			} else {
@@ -752,7 +755,7 @@ public class MainDao {
 			System.out.println(queryString);
 			int k = ptmt.executeUpdate();
 			int j = 0,i=0;
-			String queryString1 = "select * from customer_order where customerId = "+ uId + " AND delivery_status = 'not delivered' ";
+			String queryString1 = "select * from customer_order where customerId = "+ uId + " AND delivery_status = 'not delivered' order by orderId DESC";
 			ptmt1 = connection.prepareStatement(queryString1);
 			ResultSet orderIdSet = ptmt1.executeQuery();
 			orderIdSet.next();
@@ -765,15 +768,19 @@ public class MainDao {
 				ptmt3 = connection.prepareStatement(insertIntoOrderDetail);
 				ptmt3.setInt(1, orderIdSet.getInt(1));
 				ptmt3.setInt(2, productSet.getInt(3));
-				ptmt3.setInt(3, orderIdSet.getInt(4));
+				ptmt3.setInt(3, productSet.getInt(4));
+				System.out.println(insertIntoOrderDetail);
 				j = ptmt3.executeUpdate();
 			}
 			ptmt.close();
 			String removeFromCart = "delete from cart where customerId = "+ uId;
+			
+			System.out.println(queryString2);
+			System.out.println(removeFromCart);
 			ptmt  = connection.prepareStatement(removeFromCart);
 			i = ptmt.executeUpdate();
 			
-			if (k == 1 && j == 1 && i == 1) {
+			if (k == 1) {
 				return true;
 			} else {
 				return false;

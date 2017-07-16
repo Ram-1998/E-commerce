@@ -41,6 +41,7 @@
 								if(loginerror != null)
 								out.println(loginerror); 
 								%>
+							</p></span>
 						<form action="MainController" method="post">
 							<input type="email" placeholder="Email Address" name="email"/>
 							<input type="password" placeholder="Password" name="password"/>
